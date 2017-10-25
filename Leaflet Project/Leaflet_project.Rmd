@@ -1,0 +1,57 @@
+---
+title: "Leaflet Project"
+author: "Peter Siw"
+date: "25/10/2017"
+output: 
+  html_document:
+    highlight: pygments
+    keep_md: yes
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+library(leaflet)
+```
+
+# Your Guide to Singapore
+
+This is a guide to some tourist attractions in Singapore.
+
+```{r, echo = F}
+sg_data <- data.frame(
+  lat = c(1.313840, 1.287325, 1.281988, 1.286402, 1.286903, 1.2536248,
+          1.3051324, 1.300596, 1.299343),
+  lng = c(103.815914, 103.847463, 103.859591, 103.853740, 103.8455818,
+          103.824303, 103.8318903, 103.8393947, 103.855535))
+
+sg_labels <- c(
+  "<a href='https://www.sbg.org.sg/'>Singapore Botanic Gardens</a>",
+  "<a href='http://www.gardensbythebay.com.sg/en.html/'>Gardens by the Bay</a>",
+  "<a href='http://www.marinabaysands.com/mbs/homepage.html/'>Marina Bay Sands</a>",
+  "<a href='https://en.wikipedia.org/wiki/Merlion/'>Merlion Park</a>",
+  "<a href ='http://www.singapore-guide.com/top10/top10-attractions-clarke-quay-and-riverside.htm#/'>Clarke Quay</a>",
+  "<a href ='http://www.rwsentosa.com/'>Sentosa Island</a>",
+  "<a href ='http://www.orchardroad.org/'>Orchard Road</a>",
+  "<a href ='http://www.visitsingapore.com/see-do-singapore/history/history-museums/national-museum-of-singapore//'>National Museum of Singapore</a>",
+  "<a href ='http://www.ladyironchef.com/2017/07/bugis-things-to-do/'>Bugis Street</a>"
+)
+
+sg_data %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(popup = sg_labels)
+```
+
+## Emergency Contacts
+
+In the event of any emergency, please refer to the numbers here:
+
+Police    999
+
+Ambulance 995
+
+
+
+
+
+
