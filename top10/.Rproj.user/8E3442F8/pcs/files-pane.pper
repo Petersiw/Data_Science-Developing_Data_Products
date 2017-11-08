@@ -1,0 +1,9 @@
+{
+    "path" : "~/Desktop/top10/man",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
