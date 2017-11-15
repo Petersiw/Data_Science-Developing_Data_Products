@@ -1,0 +1,24 @@
+---
+title: "R Markdown and Plotly"
+author: "Peter Siw"
+date: "15/11/2017"
+output: ioslides_presentation
+always_allow_html: yes
+---
+
+## Description and Load Packages
+
+```{r, message = FALSE}
+library(plotly)
+```
+
+This slide is about using plotly to visualise mtcars data. Please proceed to the next slide for the plot.
+
+## Plotly Diagram
+
+```{r, echo = FALSE, message = FALSE}
+plot_ly(mtcars, x = ~wt, y = ~mpg, type = "scatter", color = ~factor(cyl)) %>%
+  layout(xaxis = list(title = "Weight"),
+         yaxis = list(title = "Miles per Gallon"),
+         title = "Scatter Plot of Weight vs Miles per Gallon")
+```
