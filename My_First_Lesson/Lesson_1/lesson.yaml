@@ -1,0 +1,16 @@
+- Class: meta
+  Course: My First Lesson
+  Lesson: Lesson 1
+  Author: your name goes here
+  Type: Standard
+  Organization: your organization's name goes here
+  Version: 2.4.3
+
+- Class: text
+  Output: Welcome to Lesson 1
+
+- Class: cmd_question
+  Output: Add 5 + 5 using the plus operator
+  CorrectAnswer: 5 + 5
+  AnswerTests: omnitest(correctExpr='5 + 5')
+  Hint: Just type 5 + 5.

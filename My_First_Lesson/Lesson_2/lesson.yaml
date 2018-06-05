@@ -1,0 +1,24 @@
+- Class: meta
+  Course: My First Lesson
+  Lesson: Lesson 2
+  Author: Peter Siw
+  Type: Standard
+  Organization: Wilmar International
+  Version: 2.4.3
+
+- Class: mult_question
+  Output: Which of these shapes are round
+  AnswerChoices: Circle; Square; Heptagon
+  CorrectAnswer: Circle
+  AnswerTests: omnitest(correctVal= 'Circle')
+  Hint: You should know this
+
+- Class: figure
+  Output: This is a figure here.
+  Figure: fig1.R
+  FigureType: new
+
+- Class: figure
+  Output: I added a line
+  Figure: fig2.R
+  FigureType: add

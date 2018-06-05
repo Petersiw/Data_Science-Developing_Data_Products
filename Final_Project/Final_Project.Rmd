@@ -1,0 +1,94 @@
+---
+title: "Final Project"
+author: "Peter Siw"
+date: "29/05/2018"
+output: ioslides_presentation
+transition: "rotate"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(reshape2)
+library(grid)
+aq <- airquality[complete.cases(airquality), ]
+```
+
+## Model Overfit
+
+My App (https://petersiw.shinyapps.io/final_project/) discusses the 
+problem of overfitting a multivariate model due to inclusion of too many 
+variables by comparing between the R Squared ($R^2$) and Adjusted R Squared ($\bar{R^2}$).
+
+Using the Airquality data, I created a simple model analysing the relationship
+between Ozone Levels and Temperature. By adjusting the slider, the user can
+simulate a model with varying numbers of variables (which are simply the 
+exponents of Temperature). 
+
+The model used was $Ozone~=~\beta_{0}~+~\beta_{1}Temp~+~\beta_{k}Temp^k~+~...~+\beta_{n}Temp^n$ where $n$ is being varied.
+
+## Plots of the Model Across Different $n$ Degrees of Polynomial
+
+```{r, echo=FALSE}
+#polynomial degree = 3
+p1 <- ggplot(data = aq, aes(x = Temp, y = Ozone)) + 
+      geom_point(colour = "steelblue") + 
+      labs(title = "n = 3",
+           x = "Temperature", y = "Ozone Level") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_smooth(method = "lm", 
+                  formula = y ~ poly(x, 3),
+                  colour = "red", se = F)
+#polynomial degree = 7
+p2 <- ggplot(data = aq, aes(x = Temp, y = Ozone)) + 
+      geom_point(colour = "steelblue") + 
+      labs(title = "n = 7",
+           x = "Temperature", y = "Ozone Level") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_smooth(method = "lm", 
+                  formula = y ~ poly(x, 7),
+                  colour = "red", se = F)
+#create r squared and adj r squared plot
+n <- seq(1, 15, by = 1)
+df1 <- data.frame(n = c(1:length(n)), r2 = rep(NA, length(n)), 
+                  adj_r2 = rep(NA, length(n)))
+colnames(df1) <- c("n", "R Squared", "Adjusted R Squared")
+for(i in 1:length(n)) {
+  m <- lm(formula = (formula = Ozone ~ poly(Temp, i)), data = aq)
+  df1[i, 2] <- summary(m)$r.squared
+  df1[i, 3] <- summary(m)$adj.r.squared
+}
+df2 <- melt(df1, id = "n")
+p3 <- ggplot(data = df2, aes(x = n, y = value, colour = variable)) +
+      geom_line() +
+      labs(title = "Plot of R Squared and Adjusted R Squared against the 
+           Number of Variables", x = "Number of Variables", 
+           y = "R Squared and Adjusted R Squared") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      theme(legend.position = "bottom", legend.title = element_blank()) +
+      geom_vline(xintercept = 4, colour = "orchid4", linetype = "twodash")
+pushViewport(viewport(layout = grid.layout(nrow = 2, ncol = 2)))
+view <- function(x, y) viewport(layout.pos.row = x, layout.pos.col = y)
+print(p1, vp = view(1, 1))
+print(p2, vp = view(2, 1))
+print(p3, vp = view(1:2, 2))
+```
+
+## An Example of Code for the Previous Slide
+
+``` {r, echo = T}
+p4 <- ggplot(data = aq, aes(x = Temp, y = Ozone)) + 
+      geom_point(colour = "steelblue") + 
+      labs(title = "n = 7", x = "Temperature", y = "Ozone Level") + 
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_smooth(method = "lm", formula = y ~ poly(x, 7),
+                  colour = "red", se = F)
+```
+
+## Analysis and Conclusion
+
+From the first plot, we can see that once we arrive at $n~=~5$, the model does not really change. It just increase slightly in complexity without much fundamental shape changes, unlike that between $n~=~1$ and $n~=~3$. 
+
+As seen from the plot above, $\bar{R^2}$ decreases rapidly after $n~=~4$. This shows that any model bigger than that does not explain more of the population without introducing more bias to the model.
+
+This is a classic case of overfitting, whereby the model is becoming too close to the data that it becomes biased. Therefore, one must always monitor the $\bar{R^2}$ of a model to prevent overfitting.
