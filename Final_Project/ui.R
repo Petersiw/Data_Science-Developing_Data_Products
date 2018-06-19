@@ -1,8 +1,8 @@
 library(shiny)
 
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
   
+  #for Latex output
   withMathJax(),
   tags$script("
               MathJax.Hub.Config({
@@ -15,7 +15,7 @@ shinyUI(fluidPage(
   
   # Application title
   titlePanel("Model Overfit"),
-  # Explanation
+  # Explanations
   h5("We are using the Airquality dataset provided in R to conduct a study
             on model overfitting in the case of too many explanatory 
             variables."),
@@ -45,6 +45,7 @@ shinyUI(fluidPage(
             note the progression of both $R^2$ and 
             $\\bar{R^2}$ as you change the value of (n)."),
 
+  #slider input
   sidebarLayout(
     sidebarPanel(
        sliderInput("Exp",
@@ -53,12 +54,15 @@ shinyUI(fluidPage(
                    max = 15,
                    value = 1,
                    step = 1),
+       
+       #show r squared and adjusted r squared
        h5("R Squared ((R^2))"),
        textOutput("R2"),
        h5("Adjusted R Squared ((\\bar{R^2}))"),
        textOutput("AR2")
     ),
     
+    #checkbox input
     mainPanel(
 
        plotOutput("Plot"),

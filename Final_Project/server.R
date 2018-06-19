@@ -20,6 +20,7 @@ df2 <- melt(df1, id = "n")
 
 shinyServer(function(input, output) {
   
+  #create reference model for every input choice
   m1 <- reactive({
     m <- lm(formula = Ozone ~ poly(Temp, input$Exp), data = aq)
     m
@@ -37,14 +38,17 @@ shinyServer(function(input, output) {
                         colour = "red", se = F))
   })
 
+  #show r squared
   output$R2 <- renderText({
     summary(m1())$r.squared
   })
   
+  #show adjusted r squared
   output$AR2 <- renderText({
     summary(m1())$adj.r.squared
   })
 
+  #checkbox output
   output$rsqd_graph <- renderPlot({
     if (!input$rsqd) return()
     ggplot(data = df2, aes(x = n, y = value, colour = variable)) +
